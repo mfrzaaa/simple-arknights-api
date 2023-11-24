@@ -5,6 +5,6 @@ import { charaModel } from "./model.js";
 const configModel = {
     mongoose,
     url: configDB.url,
-    chara: charaModel,
+    character: charaModel,
 };
 export default configModel;
