@@ -5,7 +5,7 @@ import {
     getCharaByName,
     updateChara,
     deleteChara,
-} from "../controller/controller";
+} from "../controller/controller.js";
 const router = express.Router();
 
 router.get("/allchara", getAllChara);

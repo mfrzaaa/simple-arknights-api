@@ -1,4 +1,4 @@
-import configDB from "../config/dbconfig";
+import configDB from "../config/dbconfig.js";
 import mongoose from "mongoose";
 import { charaModel } from "./model.js";
 

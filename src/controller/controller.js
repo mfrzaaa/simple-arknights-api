@@ -1,4 +1,4 @@
-import configModel from "../models/index";
+import configModel from "../models/index.js";
 const charaModel = configModel.chara;
 
 /**
