@@ -2,11 +2,11 @@ import mongoose from "mongoose";
 
 const charaSchema = mongoose.Schema(
     {
-        Name: String,
-        Type: String,
+        name: String,
+        type: String,
     },
     {
-        timeStamps: true,
+        versionKey: false,
     }
 );
 charaSchema.methods.toJSON = function () {

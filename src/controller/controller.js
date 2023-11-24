@@ -14,11 +14,13 @@ export const getAllChara = async (req, res) => {
 };
 export const getCharaByName = async (req, res) => {
     try {
-        const charaName = await charaModel.findById(req.params.Name);
-        if (!charaName) return res.status(404).json({ message: "Character not found" });
+        const chara = await charaModel.findOne({ name: req.params.name });
+        if (!chara) {
+            return res.status(404).json({ message: "Character not found" });
+        }
         return res.status(200).json({
             message: "Success",
-            data: charaName,
+            data: chara,
         });
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -42,10 +44,10 @@ export const createChara = async (req, res) => {
 export const updateChara = async (req, res) => {
     try {
         const data = req.body;
-        const chara = await charaModel.findById(req.params.Name);
+        const chara = await charaModel.findOne({ name: req.params.name });
         if (chara) {
-            chara.Name = data.Name;
-            chara.Type = data.Type;
+            chara.name = data.name;
+            chara.type = data.type;
             const updateChara = await chara.save();
             return res.status(200).json({
                 message: "Success",
@@ -60,9 +62,8 @@ export const updateChara = async (req, res) => {
 };
 export const deleteChara = async (req, res) => {
     try {
-        const chara = await charaModel.findById(req.params.Name);
+        const chara = await charaModel.findOneAndDelete({ name: req.params.name });
         if (chara) {
-            await chara.remove();
             return res.status(200).json({ message: "Character deleted" });
         } else {
             return res.status(404).json({ message: "Character not found" });
