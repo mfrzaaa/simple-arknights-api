@@ -29,12 +29,24 @@ export const getCharaByName = async (req, res) => {
 export const createChara = async (req, res) => {
     const chara = req.body;
     const newChara = new charaModel(chara);
+    const existingChara = await charaModel.findOne({ name: chara.name });
     try {
-        await newChara.save();
-        return res.status(201).json({
-            message: "Success",
-            data: newChara,
-        });
+        if (Object.keys(chara).length === 0 && chara.constructor === Object) {
+            return res.status(400).json({
+                message: "Request body cannot be empty",
+            });
+        }
+        if (existingChara) {
+            return res.status(409).json({
+                message: "Character with the same name already exists",
+            });
+        } else {
+            await newChara.save();
+            return res.status(201).json({
+                message: "Success",
+                data: newChara,
+            });
+        }
     } catch (error) {
         return res.status(409).json({
             message: error.message,
