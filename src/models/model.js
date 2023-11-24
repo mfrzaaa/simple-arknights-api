@@ -4,6 +4,9 @@ const charaSchema = mongoose.Schema(
     {
         Name: String,
         Type: String,
+    },
+    {
+        timeStamps: true,
     }
 );
 charaSchema.methods.toJSON = function () {
@@ -11,4 +14,4 @@ charaSchema.methods.toJSON = function () {
     object.id = _id;
     return object;
 };
-export const charaModel = mongoose.model('charaModel', charaSchema);
+export const charaModel = mongoose.model('character', charaSchema);
