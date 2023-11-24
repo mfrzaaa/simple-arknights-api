@@ -1,12 +1,5 @@
 import configModel from "../models/index.js";
-const charaModel = configModel.chara;
-
-/**
- *
- * @param {*} req
- * @param {*} res
- * @returns get All chara in database
- */
+const charaModel = configModel.character;
 
 export const getAllChara = async (req, res) => {
     try {
