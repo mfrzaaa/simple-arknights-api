@@ -30,8 +30,9 @@ export const createChara = async (req, res) => {
     const chara = req.body;
     const newChara = new charaModel(chara);
     const existingChara = await charaModel.findOne({ name: chara.name });
+    const allowedAttributes = ['name', 'type'];
     try {
-        if (Object.keys(chara).length === 0 && chara.constructor === Object) {
+        if (Object.keys(chara).length === 0) {
             return res.status(400).json({
                 message: "Request body cannot be empty",
             });
@@ -39,6 +40,17 @@ export const createChara = async (req, res) => {
         if (existingChara) {
             return res.status(409).json({
                 message: "Character with the same name already exists",
+            });
+        }
+        if (!Object.keys(chara).every(attr => allowedAttributes.includes(attr))) {
+            return res.status(400).json({
+                message: "Request body contains invalid attributes",
+                invalidAttributes: Object.keys(chara).filter(attr => !allowedAttributes.includes(attr)),
+            });
+        }
+        if (Object.keys(chara) !== 2) {
+            return res.status(400).json({
+                message: "Request body needs at least name and type attributes",
             });
         } else {
             await newChara.save();
