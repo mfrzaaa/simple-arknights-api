@@ -26,11 +26,25 @@ export const getCharaByName = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+export const getAllCharaByType = async (req, res) => {
+    try {
+        const chara = await charaModel.find({ type: req.params.type });
+        if (chara.length === 0) {
+            return res.status(404).json({ message: `No characters found for type: ${req.params.type}` });
+        }
+        return res.status(200).json({
+            message: "Success",
+            data: chara,
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
 export const createChara = async (req, res) => {
     const chara = req.body;
     const newChara = new charaModel(chara);
     const existingChara = await charaModel.findOne({ name: chara.name });
-    const allowedAttributes = ['name', 'type'];
+    const allowedAttributes = ['name', 'type', 'gender', 'race', 'stars'];
     try {
         if (Object.keys(chara).length === 0) {
             return res.status(400).json({
@@ -42,15 +56,12 @@ export const createChara = async (req, res) => {
                 message: "Character with the same name already exists",
             });
         }
-        if (!Object.keys(chara).every(attr => allowedAttributes.includes(attr))) {
+        if (
+            !Object.keys(chara).every(attr => allowedAttributes.includes(attr)) ||
+            !allowedAttributes.every(attr => Object.keys(chara).includes(attr))
+        )  {
             return res.status(400).json({
-                message: "Request body contains invalid attributes",
-                invalidAttributes: Object.keys(chara).filter(attr => !allowedAttributes.includes(attr)),
-            });
-        }
-        if (Object.keys(chara) !== 2) {
-            return res.status(400).json({
-                message: "Request body needs at least name and type attributes",
+                message: "Request body contains invalid or missing attributes",
             });
         } else {
             await newChara.save();
@@ -72,6 +83,9 @@ export const updateChara = async (req, res) => {
         if (chara) {
             chara.name = data.name;
             chara.type = data.type;
+            chara.gender = data.gender;
+            chara.race = data.race;
+            chara.stars = data.stars;
             const updateChara = await chara.save();
             return res.status(200).json({
                 message: "Success",

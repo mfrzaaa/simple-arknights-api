@@ -4,6 +4,9 @@ const charaSchema = mongoose.Schema(
     {
         name: String,
         type: String,
+        gender: String,
+        race: String,
+        stars: Number,
     },
     {
         versionKey: false,

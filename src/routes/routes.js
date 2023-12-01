@@ -5,12 +5,16 @@ import {
     getCharaByName,
     updateChara,
     deleteChara,
+    getAllCharaByType,
 } from "../controller/controller.js";
+
 const router = express.Router();
 
 router.get("/allchara", getAllChara);
 
 router.get("/chara/:name", getCharaByName);
+
+router.get("/charatype/:type", getAllCharaByType);
 
 router.post("/chara", createChara);
 
