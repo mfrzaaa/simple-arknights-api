@@ -1,2 +1,2 @@
-# project-akhir-sc-backend
+# simple-arknights-api
 project akhir untuk sc backend basic
